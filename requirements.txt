@@ -6,7 +6,7 @@ bs4
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch
 
-sqlite3 >= 3.35.0
+pysqlite3-binary
 
 langchain
 langchain_community
