@@ -16,9 +16,6 @@ from langchain_groq import ChatGroq
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-if not load_dotenv():
-    raise Exception("Failed to load env variables")
-
 
 def get_documents(url: str, strainer: bs4.SoupStrainer) -> List[Document]:
     """
@@ -114,3 +111,8 @@ def chatbot(user_query: str) -> str:
         chatbot.rag_chain = create_rag_chain()
     response = chatbot.rag_chain.invoke({"input": user_query})
     return response.get("answer")
+
+
+if __name__ == "__main__":
+    if not load_dotenv():
+        raise Exception("Failed to load env variables")
