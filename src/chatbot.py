@@ -68,6 +68,8 @@ def create_rag_chain(vectorstore: Chroma | None = None):
     return create_retrieval_chain(retriever, question_answer_chain)
 
 
-def chatbot(user_query: str, rag_chain) -> str:
-    response = rag_chain.invoke({"input": user_query})
+def chatbot(user_query: str) -> str:
+    if not hasattr(chatbot, "rag_chain"):  # emulate C static variable
+        chatbot.rag_chain = create_rag_chain()
+    response = chatbot.rag_chain.invoke({"input": user_query})
     return response.get("answer")

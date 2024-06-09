@@ -16,9 +16,8 @@ def CreateEmbeddings(c):
 
 @task
 def RunChatbotCLI(c):
-    rag_chain = chatbot.create_rag_chain()
     while (user_input := input("Pergunta: ")):
-        print(chatbot.chatbot(user_input, rag_chain))
+        print(chatbot.chatbot(user_input))
 
 
 @task
