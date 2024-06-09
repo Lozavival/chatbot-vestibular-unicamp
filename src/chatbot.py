@@ -17,6 +17,16 @@ if not load_dotenv():
 
 
 def get_documents(url: str, strainer: bs4.SoupStrainer) -> List[Document]:
+    """
+    Retrieve and split documents from a given URL.
+
+    Args:
+        url (str): The URL of the web page to load documents from.
+        strainer (bs4.SoupStrainer): A BeautifulSoup strainer to parse specific parts of the HTML.
+
+    Returns:
+        List[Document]: A list of split Document objects.
+    """
     loader = WebBaseLoader(
         web_paths=(url,),
         bs_kwargs={"parse_only": strainer},
@@ -30,6 +40,15 @@ def get_documents(url: str, strainer: bs4.SoupStrainer) -> List[Document]:
 
 
 def create_embeddings_vectorstore(docs: List[Document]) -> Chroma:
+    """
+    Create a Chroma vector store from a list of documents.
+
+    Args:
+        docs (List[Document]): A list of Document objects to be embedded.
+
+    Returns:
+        Chroma: A Chroma vector store containing the document embeddings.
+    """
     vectorstore = Chroma.from_documents(
         documents=docs,
         embedding=HuggingFaceEmbeddings(),
@@ -39,6 +58,15 @@ def create_embeddings_vectorstore(docs: List[Document]) -> Chroma:
 
 
 def create_rag_chain(vectorstore: Chroma | None = None):
+    """
+    Create a Retrieval-Augmented Generation (RAG) chain.
+
+    Args:
+        vectorstore (Chroma | None): An optional Chroma vector store. If not provided, it will be loaded from disk.
+
+    Returns:
+        A RAG chain combining document retrieval and question-answering capabilities.
+    """
     if not vectorstore:  # load vectorstore from disk
         vectorstore = Chroma(
             persist_directory="./data",
@@ -69,6 +97,15 @@ def create_rag_chain(vectorstore: Chroma | None = None):
 
 
 def chatbot(user_query: str) -> str:
+    """
+    Process a user query using the RAG chain and return the response.
+
+    Args:
+        user_query (str): The user's query to be answered.
+
+    Returns:
+        str: The generated response to the user's query.
+    """
     if not hasattr(chatbot, "rag_chain"):  # emulate C static variable
         chatbot.rag_chain = create_rag_chain()
     response = chatbot.rag_chain.invoke({"input": user_query})
