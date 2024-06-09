@@ -1,0 +1,18 @@
+python-dotenv
+
+bs4
+
+# torch-cpu for huggingface embeddings
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+
+langchain
+langchain_community
+langchain_groq
+langchain_chroma
+langchain_huggingface
+
+streamlit
+streamlit_chat
+
+fabric
