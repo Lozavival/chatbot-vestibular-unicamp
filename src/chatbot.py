@@ -112,4 +112,4 @@ def chatbot(user_query: str) -> str:
 
 if not hasattr(chatbot, "rag_chain"):  # emulate C static variable
     chatbot.rag_chain = create_rag_chain()
-    print("Criando")
+
