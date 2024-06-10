@@ -1,7 +1,3 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
 from typing import List
 
 import bs4
@@ -15,6 +11,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+if not load_dotenv():
+    raise Exception("Failed to load env variables")
 
 
 def get_documents(url: str, strainer: bs4.SoupStrainer) -> List[Document]:
@@ -107,12 +106,10 @@ def chatbot(user_query: str) -> str:
     Returns:
         str: The generated response to the user's query.
     """
-    if not hasattr(chatbot, "rag_chain"):  # emulate C static variable
-        chatbot.rag_chain = create_rag_chain()
     response = chatbot.rag_chain.invoke({"input": user_query})
     return response.get("answer")
 
 
-if __name__ == "__main__":
-    if not load_dotenv():
-        raise Exception("Failed to load env variables")
+if not hasattr(chatbot, "rag_chain"):  # emulate C static variable
+    chatbot.rag_chain = create_rag_chain()
+    print("Criando")
